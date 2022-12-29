@@ -8,6 +8,7 @@ const GlobalStyles = createGlobalStyle`
     --color-bg-primary: #fff;
     --color-bg-muted: #eee;
     --color-text-primary: #000;
+    --color-link: #000;
     --color-marker-default: #ddd;
     --space-default: 1.5rem;
   }
@@ -17,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
       --color-bg-primary: #000;
       --color-bg-muted: #222;
       --color-text-primary: #fff;
+      --color-link: #fff;
       --color-marker-default: #333;
     }
   }
@@ -27,6 +29,14 @@ const GlobalStyles = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    color: var(--color-link);
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 `;
 

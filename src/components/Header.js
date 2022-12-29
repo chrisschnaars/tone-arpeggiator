@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <StyledHeader>
       Arpeggiator
-      <span>source</span>
+      <a href="https://github.com/chrisschnaars/tone-arpeggiator">Source</a>
     </StyledHeader>
   );
 };

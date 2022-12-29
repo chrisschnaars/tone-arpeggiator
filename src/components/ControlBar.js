@@ -18,8 +18,9 @@ const ButtonsGroup = styled.div`
 `;
 
 const ControlBar = ({
+  activeKey,
   keyOptions,
-  handleKeyClick,
+  handleKeyChange,
   handlePlayClick,
   handleResetClick,
   handleTempoChange,
@@ -33,7 +34,11 @@ const ControlBar = ({
       />
       <ButtonsGroup>
         <TempoSlider handleChange={handleTempoChange} />
-        <KeyToggle keyOptions={keyOptions} handleClick={handleKeyClick} />
+        <KeyToggle
+          activeKey={activeKey}
+          keyOptions={keyOptions}
+          handleChange={handleKeyChange}
+        />
         <Button label="Reset" handleClick={handleResetClick} />
       </ButtonsGroup>
     </Wrapper>

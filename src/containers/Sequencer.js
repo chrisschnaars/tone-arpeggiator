@@ -42,7 +42,7 @@ const Sequencer = () => {
 
   // Update the key of the arpeggiator notes
   const updateKey = (e) => {
-    const updatedKey = e.target.getAttribute("data-key");
+    const updatedKey = parseInt(e.target.value);
 
     if (updatedKey !== null) {
       setActiveKey(updatedKey);
@@ -95,8 +95,9 @@ const Sequencer = () => {
         numberOfNotes={INTERVALS.length}
       />
       <ControlBar
+        activeKey={activeKey}
         keyOptions={FREQUENCIES}
-        handleKeyClick={updateKey}
+        handleKeyChange={updateKey}
         handlePlayClick={togglePlaying}
         handleResetClick={randomizeNotes}
         handleTempoChange={updateTempo}

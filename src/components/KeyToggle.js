@@ -6,16 +6,20 @@ const Wrapper = styled.div`
   display: flex;
 `;
 
-const KeyToggle = ({ keyOptions, handleClick }) => {
+const KeyToggle = ({ activeKey, keyOptions, handleChange }) => {
   return (
     <Wrapper>
       {keyOptions.map((item, index) => (
-        <Button
-          key={`key-option-${index}`}
-          label={item.note}
-          data-key={index}
-          handleClick={handleClick}
-        />
+        <div key={`frequency=${item.note}`}>
+          <input
+            type="radio"
+            id={item.note}
+            value={index}
+            onChange={handleChange}
+            checked={index === activeKey}
+          />
+          <label htmlFor={item.note}>{item.note}</label>
+        </div>
       ))}
     </Wrapper>
   );
