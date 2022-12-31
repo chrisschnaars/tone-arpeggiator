@@ -16,17 +16,25 @@ const Wrapper = styled.main`
   flex-direction: column;
 `;
 
-// active notes, playing state, s
+const synth = new Tone.Synth().toDestination();
+
 const Sequencer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [playState, setPlayState] = useState(Tone.Transport.state); // started or stopped
   const [activeNotes, setActiveNotes] = useState(
     randomIntervalArray(NUMBER_OF_BEATS)
   );
   const [activeBeat, setActiveBeat] = useState(null);
   const [activeKey, setActiveKey] = useState(0);
 
+  const checkContext = () => {
+    if (Tone.context.state === "suspended") {
+      Tone.context.resume();
+    }
+  };
+
   // Update active notes each time a note is clicked
   const updateActiveNote = (toggleId, clickedId) => {
+    checkContext();
     const updatedNote = activeNotes[toggleId] === clickedId ? null : clickedId;
 
     let newArr = [...activeNotes];
@@ -36,13 +44,14 @@ const Sequencer = () => {
 
   // Toggle play/pause mode
   const togglePlaying = () => {
+    checkContext();
     Tone.Transport.toggle();
-    setIsPlaying(!isPlaying);
+    setPlayState(Tone.Transport.state);
   };
 
   // Update the key of the arpeggiator notes
   const updateKey = (e) => {
-    const updatedKey = parseInt(e.target.value);
+    const updatedKey = parseInt(e.target.getAttribute("data-key"));
 
     if (updatedKey !== null) {
       setActiveKey(updatedKey);
@@ -64,9 +73,7 @@ const Sequencer = () => {
   // This will run one time after the component mounts
   useEffect(
     () => {
-      const synth = new Tone.Synth().toDestination();
-
-      let pattern = new Tone.Sequence(
+      const pattern = new Tone.Sequence(
         (time, index) => {
           if (activeNotes[index] !== null) {
             const intervalIndex = activeNotes[index];
@@ -78,9 +85,8 @@ const Sequencer = () => {
         },
         Array.from(activeNotes.keys()),
         "4n"
-      );
+      ).start(0);
 
-      pattern.start(0);
       return () => pattern.dispose();
     },
     [activeNotes, activeKey] // Retrigger when pattern changes
@@ -101,7 +107,7 @@ const Sequencer = () => {
         handlePlayClick={togglePlaying}
         handleResetClick={randomizeNotes}
         handleTempoChange={updateTempo}
-        isPlaying={isPlaying}
+        playState={playState}
       />
     </Wrapper>
   );

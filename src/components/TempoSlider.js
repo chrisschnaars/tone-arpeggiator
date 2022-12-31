@@ -4,21 +4,50 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
+`;
+
+const Slider = styled.input`
+  -webkit-appearance: none;
+  background: var(--color-bg-muted);
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  outline: none;
+  width: 100%;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--color-bg-toggle);
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &::-moz-range-thumb {
+    background: var(--color-bg-toggle);
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+  }
 `;
 
 const TempoSlider = ({ handleChange }) => {
   return (
     <Wrapper>
       <label htmlFor="volume">Tempo</label>
-      <input
+      <Slider
         onChange={handleChange}
         type="range"
         id="tempo"
         name="tempo"
         min="100"
-        defaultValue={120}
-        max="320"
+        defaultValue={160}
+        max="400"
         step="1"
       />
     </Wrapper>

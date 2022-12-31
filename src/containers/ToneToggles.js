@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   flex: 1;
   gap: 1rem;
   justify-content: space-between;
-  padding: var(--space-default);
+  padding: 0.25rem var(--space-default);
 `;
 
 const ToneToggles = ({

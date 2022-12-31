@@ -1,8 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
-const ACTIVE_SIZE = "48px";
-const PLAYING_SIZE = "64px";
 
 const Wrapper = styled.button`
   align-items: center;
@@ -13,30 +10,30 @@ const Wrapper = styled.button`
   flex: 1;
 
   &:hover {
+    cursor: pointer;
     > div {
-      width: ${ACTIVE_SIZE};
-      height: ${ACTIVE_SIZE};
+      &:not(.active) {
+        transform: scale(2.5);
+        transition: transform ease-out 300ms;
+      }
     }
   }
 `;
 
 const COLORS = [
-  "#EF476F",
-  "#F36A6D",
-  "#F36A6D",
-  "#F78C6B",
-  "#FBAF69",
-  "#FBAF69",
-  "#FFD166",
-  "#83D483",
-  "#06D6A0",
-  "#06D6A0",
-  "#1CABB0",
-  "#1CABB0",
-  "#317FBF",
-  "#6171AB",
-  "#906397",
-  "#C05583",
+  "#FE6233",
+  "#FE7A33",
+  "#FECF33",
+  "#FEF033",
+  "#52DF7C",
+  "#33FECF",
+  "#33C8FE",
+  "#3362FE",
+  "#6933FE",
+  "#CF33FE",
+  "#FE33C8",
+  "#FE3362",
+  "#FE3333",
 ];
 
 const MarkerButton = styled.div`
@@ -47,8 +44,8 @@ const MarkerButton = styled.div`
   transition: all ease-out 400ms;
 
   &.active {
-    width: ${ACTIVE_SIZE};
-    height: ${ACTIVE_SIZE};
+    width: 48px;
+    height: 48px;
   }
 
   &.playing {
@@ -57,14 +54,32 @@ const MarkerButton = styled.div`
 `;
 
 const Note = ({ toggleId, noteId, isActive, isPlaying, handleNoteClick }) => {
+  const [isHover, setIsHover] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHover(false);
+  };
   const activeClass = isActive ? "active" : "";
   const playingClass = isActive && isPlaying ? "playing" : null;
 
+  const styles = {
+    background:
+      isHover || isActive ? `${COLORS[noteId]}` : "var(--color-marker-default)",
+  };
+
   return (
-    <Wrapper onClick={() => handleNoteClick(toggleId, noteId)}>
+    <Wrapper
+      onClick={() => handleNoteClick(toggleId, noteId)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <MarkerButton
         className={`${activeClass} ${playingClass}`}
-        style={{ background: isActive ? COLORS[noteId] : undefined }}
+        style={styles}
       ></MarkerButton>
     </Wrapper>
   );
