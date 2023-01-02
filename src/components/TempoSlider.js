@@ -7,6 +7,19 @@ const Wrapper = styled.div`
   gap: 0.75rem;
 `;
 
+const thumbStyles = `
+  background: var(--color-button-active);
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  height: 2rem;
+  width: 2rem;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
 const Slider = styled.input`
   -webkit-appearance: none;
   background: var(--color-bg-muted);
@@ -17,22 +30,11 @@ const Slider = styled.input`
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
-    background: var(--color-bg-toggle);
-    border: none;
-    border-radius: 2rem;
-    cursor: pointer;
-    height: 2rem;
-    width: 2rem;
+    ${thumbStyles}
   }
 
   &::-moz-range-thumb {
-    background: var(--color-bg-toggle);
-    border: none;
-    border-radius: 2rem;
-    cursor: pointer;
-    height: 2rem;
-    width: 2rem;
+    ${thumbStyles}
   }
 `;
 

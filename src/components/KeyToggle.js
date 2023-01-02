@@ -18,7 +18,7 @@ const SelectorButton = styled(Button)`
   padding-right: 1.25rem;
 
   &.active {
-    background-color: var(--color-bg-toggle);
+    background-color: var(--color-button-active);
   }
 
   &:first-child {

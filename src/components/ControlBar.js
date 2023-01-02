@@ -9,6 +9,7 @@ import { ReactComponent as PlayIcon } from "../assets/icons/play.svg";
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
+  gap: 2rem;
   justify-content: space-between;
   padding: var(--space-default);
 `;
