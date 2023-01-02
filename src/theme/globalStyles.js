@@ -9,10 +9,10 @@ const GlobalStyles = createGlobalStyle`
     --color-bg-muted: #EAE5E1;
     --color-button: var(--color-bg-muted);
     --color-button-hover: #E0D8D2;
-    --color-bg-toggle: #FFF;
-    --color-text-primary: #000609;
-    --color-link: #000;
-    --color-marker-default: #EAE5E1;
+    --color-button-active: #D4C9BF;
+    --color-text-primary: #1C1A17;
+    --color-link: var(--color-text-primary);
+    --color-marker-default: var(--color-bg-muted);
     --space-default: 1.5rem;
   }
 
@@ -20,10 +20,12 @@ const GlobalStyles = createGlobalStyle`
     :root {
       --color-bg-primary: #282C35;
       --color-bg-muted: #3B414E;
-      --color-bg-toggle: #5F687C;
-      --color-text-primary: #fff;
-      --color-link: #fff;
-      --color-marker-default: #343A46;
+      --color-button: var(--color-bg-muted);
+      --color-button-hover: #485165;
+      --color-button-active: #545F78;
+      --color-text-primary: #F3F4F6;
+      --color-link: var(--color-text-primary);
+      --color-marker-default: var(--color-bg-muted);
     }
   }
 
