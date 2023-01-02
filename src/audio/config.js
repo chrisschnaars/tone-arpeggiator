@@ -48,7 +48,7 @@ export const INTERVALS = [
 export const randomIntervalArray = (arrLength) => {
   const arr = [];
   for (let i = 0; i < arrLength; i++) {
-    const n = getRandomInt(INTERVALS.length);
+    const n = [getRandomInt(INTERVALS.length)];
     arr.push(n);
   }
   return arr;

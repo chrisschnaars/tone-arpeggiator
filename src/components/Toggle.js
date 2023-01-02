@@ -13,8 +13,8 @@ const Wrapper = styled.div`
 `;
 
 const Toggle = ({
-  activeNote,
-  id,
+  activeNotes,
+  toggleId,
   handleClick,
   numberOfNotes,
   isActiveBeat,
@@ -23,12 +23,13 @@ const Toggle = ({
   const notes = [];
 
   for (let i = 0; i < numberOfNotes; i++) {
+    const noteIsActive = activeNotes.includes(i);
     notes.push(
       <Note
         key={i}
-        toggleId={id}
+        toggleId={toggleId}
         noteId={i}
-        isActive={activeNote === i ? true : false}
+        isActive={noteIsActive}
         isPlaying={isActiveBeat}
         handleNoteClick={handleClick}
       />

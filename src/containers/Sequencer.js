@@ -35,10 +35,18 @@ const Sequencer = () => {
   // Update active notes each time a note is clicked
   const updateActiveNote = (toggleId, clickedId) => {
     checkContext();
-    const updatedNote = activeNotes[toggleId] === clickedId ? null : clickedId;
 
+    // Make copy of active note arrays
     let newArr = [...activeNotes];
-    newArr[toggleId] = updatedNote;
+
+    // Check if note array for beat/toggle already includes clicked item
+    if (newArr[toggleId].includes(clickedId)) {
+      const id = newArr[toggleId].indexOf(clickedId);
+      newArr[toggleId].splice(id, 1);
+    } else {
+      newArr[toggleId].push(clickedId);
+    }
+
     setActiveNotes(newArr);
   };
 
@@ -75,7 +83,7 @@ const Sequencer = () => {
     () => {
       const pattern = new Tone.Sequence(
         (time, index) => {
-          if (activeNotes[index] !== null) {
+          if (activeNotes[index].length !== 0) {
             const intervalIndex = activeNotes[index];
             const f = FREQUENCIES[activeKey].frequency;
             const note = INTERVALS[intervalIndex] * f;
