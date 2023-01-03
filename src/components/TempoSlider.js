@@ -47,9 +47,9 @@ const TempoSlider = ({ handleChange }) => {
         type="range"
         id="tempo"
         name="tempo"
-        min="100"
-        defaultValue={160}
-        max="400"
+        min="5"
+        defaultValue={20}
+        max="120"
         step="1"
       />
     </Wrapper>

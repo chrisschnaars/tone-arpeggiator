@@ -13,27 +13,34 @@ const Wrapper = styled.div`
 `;
 
 const Toggle = ({
-  activeNotes,
+  playingNoteId,
+  noteSequence,
   toggleId,
   handleClick,
   numberOfNotes,
-  isActiveBeat,
+  noteCountStart,
 }) => {
   // Create array note note components
   const notes = [];
 
+  let noteCount = noteCountStart;
+
   for (let i = 0; i < numberOfNotes; i++) {
-    const noteIsActive = activeNotes.includes(i);
+    const noteIsActive = noteSequence.includes(i);
+    const noteIsPlaying = playingNoteId === noteCount;
     notes.push(
       <Note
-        key={i}
-        toggleId={toggleId}
+        key={`${toggleId}-${i}`}
         noteId={i}
+        noteNumber={noteIsActive ? noteCount : null}
+        toggleId={toggleId}
         isActive={noteIsActive}
-        isPlaying={isActiveBeat}
+        isPlaying={noteIsPlaying}
         handleNoteClick={handleClick}
       />
     );
+
+    noteCount = noteIsActive ? noteCount + 1 : noteCount;
   }
 
   return <Wrapper>{notes}</Wrapper>;

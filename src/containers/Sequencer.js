@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as Tone from "tone";
 import styled from "styled-components";
 import ControlBar from "../components/ControlBar";
@@ -18,12 +18,15 @@ const Wrapper = styled.main`
 
 const synth = new Tone.Synth().toDestination();
 
+// Keep a count of total active notes
+let totalActiveNotes = NUMBER_OF_BEATS;
+
 const Sequencer = () => {
   const [playState, setPlayState] = useState(Tone.Transport.state); // started or stopped
-  const [activeNotes, setActiveNotes] = useState(
+  const [noteSequence, setNoteSequence] = useState(
     randomIntervalArray(NUMBER_OF_BEATS)
   );
-  const [activeBeat, setActiveBeat] = useState(null);
+  const [activeNote, setActiveNote] = useState(0);
   const [activeKey, setActiveKey] = useState(0);
 
   const checkContext = () => {
@@ -37,17 +40,21 @@ const Sequencer = () => {
     checkContext();
 
     // Make copy of active note arrays
-    let newArr = [...activeNotes];
+    let newArr = [...noteSequence];
 
     // Check if note array for beat/toggle already includes clicked item
     if (newArr[toggleId].includes(clickedId)) {
       const id = newArr[toggleId].indexOf(clickedId);
       newArr[toggleId].splice(id, 1);
+
+      totalActiveNotes -= 1;
     } else {
       newArr[toggleId].push(clickedId);
+      totalActiveNotes += 1;
+      setActiveNote(activeNote + 1);
     }
 
-    setActiveNotes(newArr);
+    setNoteSequence(newArr);
   };
 
   // Toggle play/pause mode
@@ -75,36 +82,47 @@ const Sequencer = () => {
   // Randomize the active note in each beat
   const randomizeNotes = () => {
     const arr = randomIntervalArray(NUMBER_OF_BEATS);
-    setActiveNotes(arr);
+    setNoteSequence(arr);
   };
+
+  // Create counter to update inside useEffect
+  const count = useRef(0);
 
   // This will run one time after the component mounts
   useEffect(
     () => {
       const pattern = new Tone.Sequence(
         (time, index) => {
-          if (activeNotes[index].length !== 0) {
-            const intervalIndex = activeNotes[index];
-            const f = FREQUENCIES[activeKey].frequency;
-            const note = INTERVALS[intervalIndex] * f;
-            synth.triggerAttackRelease(note, "8n", time);
-            setActiveBeat(index);
-          }
+          const f = FREQUENCIES[activeKey].frequency;
+          const note = INTERVALS[index] * f;
+          synth.triggerAttackRelease(note, "16t", time);
+
+          Tone.Draw.schedule(() => {
+            count.current =
+              count.current >= totalActiveNotes - 1 ? 0 : count.current + 1;
+            setActiveNote(count.current);
+          });
+
+          console.log(pattern.playbackRate);
         },
-        Array.from(activeNotes.keys()),
+        [noteSequence],
         "4n"
       ).start(0);
 
       return () => pattern.dispose();
     },
-    [activeNotes, activeKey] // Retrigger when pattern changes
+    [noteSequence, activeKey] // Retrigger when pattern changes
   );
+
+  useEffect(() => {
+    Tone.Transport.bpm.value = 20;
+  }, []);
 
   return (
     <Wrapper>
       <ToneToggles
-        activeBeat={activeBeat}
-        activeNotes={activeNotes}
+        playingNoteId={activeNote}
+        noteSequence={noteSequence}
         handleToggleClick={updateActiveNote}
         numberOfNotes={INTERVALS.length}
       />

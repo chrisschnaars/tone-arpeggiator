@@ -41,7 +41,7 @@ const MarkerButton = styled.div`
   border-radius: 64px;
   width: 16px;
   height: 16px;
-  transition: all ease-out 400ms;
+  transition: all ease-out 300ms;
 
   &.active {
     width: 48px;
@@ -53,7 +53,14 @@ const MarkerButton = styled.div`
   }
 `;
 
-const Note = ({ toggleId, noteId, isActive, isPlaying, handleNoteClick }) => {
+const Note = ({
+  toggleId,
+  noteId,
+  noteNumber,
+  isActive,
+  isPlaying,
+  handleNoteClick,
+}) => {
   const [isHover, setIsHover] = useState(false);
 
   const handleMouseEnter = () => {

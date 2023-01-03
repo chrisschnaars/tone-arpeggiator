@@ -11,21 +11,27 @@ const Wrapper = styled.div`
 `;
 
 const ToneToggles = ({
-  activeBeat,
-  activeNotes,
+  playingNoteId,
+  noteSequence,
   handleToggleClick,
   numberOfNotes,
 }) => {
   const toggles = [];
-  for (let i = 0; i < activeNotes.length; i++) {
+
+  for (let i = 0; i < noteSequence.length; i++) {
+    let noteCountStart = 0;
+    for (let j = 0; j < i; j++) {
+      noteCountStart += noteSequence[j].length;
+    }
     toggles.push(
       <Toggle
         key={i}
         toggleId={i}
-        activeNotes={activeNotes[i]}
+        playingNoteId={playingNoteId}
+        noteSequence={noteSequence[i]}
         handleClick={handleToggleClick}
-        isActiveBeat={activeBeat === i}
         numberOfNotes={numberOfNotes}
+        noteCountStart={noteCountStart}
       />
     );
   }
