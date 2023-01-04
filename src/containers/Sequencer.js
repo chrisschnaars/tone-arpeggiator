@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as Tone from "tone";
 import styled from "styled-components";
+import synth from "../audio/synth";
 import ControlBar from "../components/ControlBar";
 import ToneToggles from "./ToneToggles";
 import {
@@ -16,8 +17,6 @@ const Wrapper = styled.main`
   flex-direction: column;
 `;
 
-const synth = new Tone.Synth().toDestination();
-
 // Keep a count of total active notes
 let totalActiveNotes = NUMBER_OF_BEATS;
 
@@ -29,6 +28,10 @@ const Sequencer = () => {
   const [activeNote, setActiveNote] = useState(0);
   const [activeKey, setActiveKey] = useState(0);
 
+  // Create counter to update inside useEffect
+  let count = useRef(0);
+
+  // Check if audio context is suspended
   const checkContext = () => {
     if (Tone.context.state === "suspended") {
       Tone.context.resume();
@@ -46,12 +49,10 @@ const Sequencer = () => {
     if (newArr[toggleId].includes(clickedId)) {
       const id = newArr[toggleId].indexOf(clickedId);
       newArr[toggleId].splice(id, 1);
-
       totalActiveNotes -= 1;
     } else {
       newArr[toggleId].push(clickedId);
       totalActiveNotes += 1;
-      setActiveNote(activeNote + 1);
     }
 
     setNoteSequence(newArr);
@@ -85,9 +86,6 @@ const Sequencer = () => {
     setNoteSequence(arr);
   };
 
-  // Create counter to update inside useEffect
-  const count = useRef(0);
-
   // This will run one time after the component mounts
   useEffect(
     () => {
@@ -98,12 +96,10 @@ const Sequencer = () => {
           synth.triggerAttackRelease(note, "16t", time);
 
           Tone.Draw.schedule(() => {
+            setActiveNote(count.current);
             count.current =
               count.current >= totalActiveNotes - 1 ? 0 : count.current + 1;
-            setActiveNote(count.current);
           });
-
-          console.log(pattern.playbackRate);
         },
         [noteSequence],
         "4n"
